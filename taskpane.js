@@ -1,7 +1,7 @@
 // ============================================================
 // CONFIG — remplace par ta vraie clé API Anthropic
 // ============================================================
-const ANTHROPIC_API_KEY = "sk-ant-api03-VOTRE-CLE-ICI";
+const ANTHROPIC_API_KEY = "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";
 // ============================================================
 
 Office.onReady(() => {
