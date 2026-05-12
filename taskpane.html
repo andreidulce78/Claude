@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Claude AI</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap');
+
+    :root {
+      --noir: #0a0a0a;
+      --blanc: #f8f6f1;
+      --or: #c9a84c;
+      --or-light: #e8d5a3;
+      --gris: #6b6b6b;
+      --gris-light: #e8e4dc;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--blanc);
+      color: var(--noir);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--noir);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.25em;
+      color: var(--blanc);
+      text-transform: uppercase;
+    }
+
+    .logo-divider {
+      width: 1px;
+      height: 16px;
+      background: var(--or);
+      opacity: 0.6;
+    }
+
+    .claude-badge {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--or);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gris);
+      margin-bottom: 8px;
+    }
+
+    .action-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border: 1px solid var(--gris-light);
+      background: white;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--noir);
+      transition: all 0.2s ease;
+      text-align: left;
+      border-radius: 2px;
+    }
+
+    .btn:hover {
+      border-color: var(--or);
+      background: #fffdf7;
+    }
+
+    .btn-primary {
+      background: var(--noir);
+      color: var(--blanc);
+      border-color: var(--noir);
+    }
+
+    .btn-primary:hover {
+      background: #1a1a1a;
+      border-color: var(--or);
+    }
+
+    .btn-icon {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .result-box {
+      display: none;
+      background: white;
+      border: 1px solid var(--gris-light);
+      border-left: 3px solid var(--or);
+      padding: 16px;
+      border-radius: 2px;
+    }
+
+    .result-box.visible {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .result-title {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--or);
+    }
+
+    .copy-btn {
+      font-size: 11px;
+      color: var(--gris);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      padding: 2px 6px;
+      border: 1px solid var(--gris-light);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover { border-color: var(--or); color: var(--noir); }
+
+    .result-content {
+      font-size: 13px;
+      line-height: 1.7;
+      color: #333;
+      white-space: pre-wrap;
+    }
+
+    .loading {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 16px;
+      color: var(--gris);
+      font-size: 13px;
+    }
+
+    .loading.visible { display: flex; }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--gris-light);
+      border-top-color: var(--or);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-box {
+      display: none;
+      background: #fff5f5;
+      border: 1px solid #ffcccc;
+      border-left: 3px solid #e53e3e;
+      padding: 12px 16px;
+      border-radius: 2px;
+      font-size: 12px;
+      color: #c53030;
+    }
+
+    .error-box.visible { display: block; }
+
+    footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--gris-light);
+      text-align: center;
+      font-size: 10px;
+      color: var(--gris);
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="logo-text">Pairi Daiza</span>
+  <div class="logo-divider"></div>
+  <span class="claude-badge">× Claude AI</span>
+</header>
+
+<main>
+  <div>
+    <div class="section-label">Actions</div>
+    <div class="action-group">
+      <button class="btn btn-primary" onclick="analyzeEmail('resume')">
+        <span class="btn-icon">✦</span>
+        Résumer cet e-mail
+      </button>
+      <button class="btn" onclick="analyzeEmail('points')">
+        <span class="btn-icon">◆</span>
+        Points clés & actions
+      </button>
+      <button class="btn" onclick="analyzeEmail('reply')">
+        <span class="btn-icon">↩</span>
+        Suggérer une réponse
+      </button>
+      <button class="btn" onclick="analyzeEmail('translate')">
+        <span class="btn-icon">⟷</span>
+        Traduire en français
+      </button>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <span>Claude analyse l'e-mail...</span>
+  </div>
+
+  <div class="error-box" id="errorBox"></div>
+
+  <div class="result-box" id="resultBox">
+    <div class="result-header">
+      <span class="result-title" id="resultTitle">Résumé</span>
+      <button class="copy-btn" onclick="copyResult()">Copier</button>
+    </div>
+    <div class="result-content" id="resultContent"></div>
+  </div>
+</main>
+
+<footer>Propulsé par Claude · Pairi Daiza © 2025</footer>
+
+<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+<script src="taskpane.js"></script>
+</body>
+</html>
